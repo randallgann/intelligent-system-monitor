@@ -2,7 +2,7 @@
 
 import time
 from collections import deque
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 import psutil
@@ -44,7 +44,7 @@ class MetricsCollector:
             }
 
         metrics = {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'cpu_percent': cpu_percent,
             'cpu_count': psutil.cpu_count(),
             'memory_percent': memory.percent,

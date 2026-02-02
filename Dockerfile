@@ -18,8 +18,11 @@ COPY . .
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
 USER appuser
 
-# Expose port
-EXPOSE 5000
+# Expose port (Cloud Run uses PORT env var, default 8080)
+EXPOSE 8080
 
-# Run with gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "--threads", "4", "run:app"]
+# Set default port
+ENV PORT=8080
+
+# Run with gunicorn using PORT env var
+CMD exec gunicorn --bind 0.0.0.0:$PORT --workers 2 --threads 4 run:app
